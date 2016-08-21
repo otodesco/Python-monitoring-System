@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <!-- Meta and Title -->
+    <meta charset="utf-8">
+    <title>myAdmin </title>
+    <meta name="keywords" content="HTML5, Bootstrap 3, Admin Template, UI Theme"/>
+    <meta name="description" content="Alliance - A Responsive HTML5 Admin UI Framework">
+    <meta name="author" content="ThemeREX">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,600,700' rel='stylesheet' type='text/css'>
+
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" type="text/css" href="static/assets/js/plugins/datatables/media/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css"
+          href="static/assets/js/plugins/datatables/extensions/Editor/css/dataTables.editor.css">
+    <link rel="stylesheet" type="text/css"
+          href="static/assets/js/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css">
+
+    <!-- CSS - theme -->
+    <link rel="stylesheet" type="text/css" href="static/assets/skin/default_skin/less/theme.min.css">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="static/assets/img/favicon.png">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" type="text/css" href="static/assets/js/utility/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.min.css">
+
+    <!-- jQuery -->
+    <script src="static/assets/js/jquery/jquery-1.11.1.min.js"></script>
+    <!-- IE8 HTML5 support -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="tables-datatables" data-spy="scroll" data-target="#nav-spy" data-offset="300">
+
+
+<!-- Body Wrap -->
+<div id="main">
+
+    <!-- Header  -->
+    <header class="navbar navbar-fixed-top">
+        <div class="navbar-logo-wrapper dark bg-dark">
+            <a style="color: white; font-size: 23px; margin-top: 13px; margin-left: 47px;" class="navbar-logo-image" href="http://localhost:5000/">
+                Statistique
+            </a>
+        </div>
+        <span id="sidebar_left_toggle" class="ad ad-lines navbar-nav navbar-left"></span>
+    </header>
+    <!-- /Header  -->
+
+    <!-- Main Wrapper -->
+    <section id="content">
+      
+
+        <!-- Content -->
+        <section id="content" class="table-layout animated fadeIn">
+
+            <!-- Column Center -->
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <div class="panel sort-disable mb50" id="p4" data-panel-color="false" data-panel-fullscreen="false" data-panel-title="false" data-panel-collapse="false">
+                                <div class="panel-heading">
+                                    <span class="panel-title"> RAM usage</span>
+                               </div>
+                                <canvas id="canvas" height="300" width="500"></canvas>
+                                <label style="color: rgb(220, 220, 220);">Espace RAM Plein</label> 
+                                <label style="color: rgb(220, 220, 220);">_</label>
+                                    </br>
+                                <label style="color: rgba(151,187,205,1)">Espace RAM Libre</label> 
+                                <label style="color: rgba(151,187,205,1)">_</label>
+                            </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel sort-disable mb50" id="p4" data-panel-color="false" data-panel-fullscreen="false" data-panel-title="false" data-panel-collapse="false">
+                                <div class="panel-heading">
+                                    <span class="panel-title"> HDD usage</span>
+                               </div>
+
+                                <canvas id="canvas2" height="300" width="500"></canvas>
+                                <label style="color: rgb(220, 220, 220);">Espace HDD Plein</label> 
+                                <label style="color: rgb(220, 220, 220);">_</label>
+                                    </br>
+                                <label style="color: rgba(151,187,205,1)">Espace HDD Libre</label> 
+                                <label style="color: rgba(151,187,205,1)">_</label>
+                            </div>
+                    </div>
+
+                <script>
+                    $(document).ready(function(){
+                        var c = 0;
+                        
+                        var label=new Array;
+                        var value=new Array;
+                        var valueVide=new Array;
+
+
+                        var labelDisqueDur=new Array;
+                        var valueDisqueDur=new Array;
+                        var valueVideDisqueDur=new Array;
+
+                        {% for entry in rame %}
+                           label[c] = "{{ entry[0] }}";
+                           value[c] = "{{ entry[1] }}";
+                           valueVide[c] = "{{ entry[2] - entry[1] }}";
+                           c++;
+                        {% endfor %}
+
+                        c = 0;
+                        {% for entry in hdd %}
+                           labelDisqueDur[c] = "{{ entry[0] }}";
+                           valueDisqueDur[c] = "{{ entry[1] }}";
+                           valueVideDisqueDur[c] = "{{ entry[2] - entry[1] }}";
+                           c++;
+                        {% endfor %}
+
+                        
+                        var dataram = {
+                        labels: label,
+                        datasets: [
+                            {
+                                label: "Espace Ram Plein",
+                                fillColor: "rgba(220,220,220,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(220,220,220,1)",
+                                data: value
+                            },
+                            {
+                                label: "Espace Ram Libre",
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(151,187,205,1)",
+                                pointColor: "rgba(151,187,205,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: valueVide
+                            }
+                        ]
+                    };
+
+
+                    var datahdd = {
+                        labels: labelDisqueDur,
+                        datasets: [
+                            {
+                                label: "Espace Ram Plein",
+                                fillColor: "rgba(220,220,220,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(220,220,220,1)",
+                                data: valueDisqueDur
+                            },
+                            {
+                                label: "Espace Ram Libre",
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(151,187,205,1)",
+                                pointColor: "rgba(151,187,205,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: valueVideDisqueDur
+                            }
+                        ]
+                    };
+
+                    var cv = $("#canvas").get(0).getContext("2d");
+                    var mychart = new Chart(cv).Line(dataram);  
+
+                    var cv2 = $("#canvas2").get(0).getContext("2d");
+                    var mychart2 = new Chart(cv2).Line(datahdd);             
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    });
+                </script>
+                      
+
+                </div>
+
+
+        </section>
+        <!-- /Content -->
+
+    </section>
+
+
+</div>
+<!-- /Body Wrap  -->
+
+
+<!-- Scripts -->
+
+
+<script src="static/assets/js/jquery/jquery_ui/jquery-ui.min.js"></script>
+
+<!-- Datatables JS -->
+<script src="static/assets/js/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="static/assets/js/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="static/assets/js/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+<script src="static/assets/js/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<!-- HighCharts Plugin -->
+<script src="static/assets/js/plugins/highcharts/highcharts.js"></script>
+
+<!-- Theme Scripts -->
+<script src="static/assets/js/utility/utility.js"></script>
+<script src="static/assets/js/utility/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="static/assets/js/demo/demo.js"></script>
+<script src="static/assets/js/main.js"></script>
+<script src="static/assets/js/chart.js"></script>
+<script src="static/assets/js/demo/widgets_sidebar.js"></script>
+<script src="static/assets/js/pages/tables-data.js"></script>
+
+<!-- /Scripts -->
+
+</body>
+
+</html>

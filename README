@@ -1,0 +1,116 @@
+==== README =====
+
+1) Présentation des différents modules
+2) Paquets nécessaires à l'utilisation
+3) Exemple d'utilisation
+
+
+Présentation des différents modules
+-----------------------------------
+
+- Collecteur/		
+Outils de sonde à installer sur les machines que l'on veut administrer
+
+- Collecteur/deamonCollecteur.py
+Script python à lancer sur les machines que l'on souhaite suivre, récupère les informations de la
+machine suivie (CPU,RAM,HDD) et l'envoie au serveur via HTTP, le script affiche si la requête à été reçue.
+Tous les autres fichiers sont des scripts bash et python permettant la récolte des différentes informations
+
+- OutilsAdmin/
+Contient tous les outils d'administrations des systèmes
+
+- OutilsAdmin/Stockage/
+Contient la base de donnée sqlite3 'adsys.db' , le script de création 'script' et le script python de
+sauvegarde et de restauration de la base de donnée backupBDD.py (à son lancement 'adsys.db' est copié dans 'backups/'
+avec comme nom la date de la sauvegarde)
+
+- OutilsAdmin/serveurPython/
+Dossier contenant les éléments nécessaires à la partie Web (partie affichage web et partie gestion des requêtes HTTP, 
+le serveur peut être lancé indépendamment via le script python 'serveurWeb.py', le port par  défaut est 5000.
+
+- OutilsAdmin/OutilGestion/
+Contient tout les scripts utiles à la surveillance et au paramétrage.
+
+- OutilsAdmin/OutilGestion/moduleAffichage.py
+Script python interactif permettant l'affichage par MAC de chaque machine surveillée (sur laquelle le 
+'Collecteur/' est installé) via des graphiques généré dans tmp/ et automatiquement ouvert avec eog (eye of gnome),
+affiche aussi la date des dernières informations  reçues pour chaque machine, on pourra aussi paramétrer
+via ce module le nombre d'entrées maximales dans la BDD 'adsys.db' pour chaque type (CPU,RAM,HDD), 
+le paramétrage des critères d'état critique (pourcentage d'utilisation maximal) sont aussi disponible pour chaque type.
+
+- OutilsAdmin/OutilGestion/moduleCrise.py
+Script python permettant le retour d'un booléen relatif à l'état critique d'une machine surveillée.
+
+- OutilsAdmin/OutilGestion/moduleMail.py
+Script python permettant l'envoi d'un mail à une adresse spécifié via le serveur stmp de l'uapv, le
+contenu du mail est défini par le fichier template 'mail_template' obligatoire.
+
+- OutilsAdmin/OutilGestion/parseurCERT.py
+Script python permettant la récupération des dernières alertes notifiées par le CERT et leur ajout
+dans la BDD si elles n'existent pas déjà dans celle-ci.
+
+- OutilsAdmin/OutilGestion/daemonAdmin.py
+Script python principal, il doit être configuré et lancé par l'administrateur système, ce script permet
+le lancement du serveur python et exécute les actions suivantes en boucle dans les intervalles définis dans le script:
+*Vérifie si une des machines est en état de crise, si oui, un mail est envoyé
+*Récupère les dernières alertes du CERT
+*Effectue une sauvegarde de la BDD actuelle
+L'intervalle de temps entre les actions (par ex: entre deux sauvegardes de la BDD) peut être reglé par la variable
+DELAY_* du script (en secondes)
+Remarque : Le script doit être fermé avec le signal émis par la commande 'CTRL+C' afin que les threads et les ressources associées soit
+correctement libérées.
+
+- OutilsAdmin/OutilGestion/bddHelper.py
+Classe python permettant une liaison aisée entre les scripts python et la BDD, utilisé dans la plupart des scripts.
+
+
+Paquets nécessaires à l'utilisation
+-----------------------------------
+
+Les commandes suivantes ont besoin d'être lancées afin que tous les modules puissent être fonctionnels
+
+*Installer gestionnaire paquet python
+sudo apt install python-pip
+
+*Permet d'afficher une image  
+sudo apt install eog
+
+*Base de donnée locale
+sudo apt-get install sqlite3
+
+*Parsing
+sudo pip install beautifulsoup4
+
+*Requêtes HTTP
+sudo pip install requests 
+
+*Librairie de graphique python
+sudo pip install pygal 
+
+*Obligatoire pour la conversion du svg vers png dans pygal
+sudo apt-get install python-cairosvg  
+sudo pip install lxml
+sudo pip install tinycss
+sudo pip install cssselect
+
+*Services Web
+sudo apt-get install python-virtualenv
+sudo apt-get install python-flask
+
+
+Exemple d'utilisation
+-----------------------------------
+
+Si on veut lancer un collecteur, on se place dans le dossier 'Collecteur/' et on lance la commande
+$ python deamonCollecteur.py 
+
+On peut lancer l'outil principal d'administration de systèmes (serveur web, crise, mail, backup BDD)  en se plaçant dans
+'OutilsAdmin/OutilGestion/' et en lançant
+$ python daemonAdmin.py 
+
+On peut configurer les tailles d'historiques, les paramètres de criticité et observer les informations statistiques de toutes les
+machines via le module d'affichage, on le lance en se plaçant dans 'OutilsAdmin/OutilGestion/' et en lançant
+$ python moduleAffichage.py 
+
+On peut accéder au module d'affichage web en lançant le serveur web puis en lançant l'adresse du serveur dans un navigateur
+( par défaut http://127.0.0.1:5000/ )

@@ -1,0 +1,65 @@
+
+CREATE TABLE "alerte" (
+  "id" integer PRIMARY KEY,
+  "reference" character varying(50) NOT NULL,
+  "date" datetime,
+  "description" character varying(255) NOT NULL
+);
+
+CREATE TABLE "machine" (
+  "id" integer PRIMARY KEY,
+  "adr_mac" character varying(40) NOT NULL,
+  "last_modif" date NOT NULL
+);
+
+CREATE TABLE "collecteurRam" (
+  "id" integer PRIMARY KEY,
+  "date" datetime NOT NULL,
+  "mb_total" integer NOT NULL,
+  "mb_use" integer NOT NULL,
+  "pc_use" integer NOT NULL,
+  "id_machine" integer,
+  FOREIGN KEY ("id_machine") REFERENCES "machine" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+CREATE TABLE "collecteurCpu" (
+  "id" integer PRIMARY KEY,
+  "date" datetime NOT NULL,
+  "nb_procs" integer NOT NULL,
+  "pc_use" integer NOT NULL,
+  "temperature" integer NOT NULL,
+  "type" integer NOT NULL,
+  "id_machine" integer,
+   FOREIGN KEY ("id_machine") REFERENCES "machine" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE "collecteurHdd" (
+  "id" integer PRIMARY KEY,
+  "date" datetime NOT NULL,
+  "mb_total" integer NOT NULL,
+  "mb_use" integer NOT NULL,
+  "pc_use" integer NOT NULL,
+  "id_machine" integer,
+   FOREIGN KEY ("id_machine") REFERENCES "machine" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE "parametre" (
+  "key" character varying(15) PRIMARY KEY,
+  "value" integer NOT NULL
+
+);
+
+
+
+INSERT OR REPLACE INTO parametre (key,value) VALUES
+('cpuCrisisTreshold', 95),
+('ramCrisisTreshold', 95),
+('hddCrisisTreshold', 95),
+('cpuMaxHistory', 1000),
+('ramMaxHistory', 1000),
+('hddMaxHistory', 1000),
+('alerteMaxHistory', 10)
+;

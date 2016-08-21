@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Meta and Title -->
+    <meta charset="utf-8">
+    <title>myAdmin</title>
+    <meta name="keywords" content="HTML5, Bootstrap 3, Admin Template, UI Theme"/>
+    <meta name="description" content="Alliance - A Responsive HTML5 Admin UI Framework">
+    <meta name="author" content="ThemeREX">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,600,700' rel='stylesheet' type='text/css'>
+
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" type="text/css" href="static/assets/js/plugins/datatables/media/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css"
+          href="static/assets/js/plugins/datatables/extensions/Editor/css/dataTables.editor.css">
+    <link rel="stylesheet" type="text/css"
+          href="static/assets/js/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css">
+
+    <!-- CSS - theme -->
+    <link rel="stylesheet" type="text/css" href="static/assets/skin/default_skin/less/theme.min.css">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="static/assets/img/favicon.png">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" type="text/css" href="static/assets/js/utility/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.min.css">
+
+    <!-- IE8 HTML5 support -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="tables-datatables" data-spy="scroll" data-target="#nav-spy" data-offset="300">
+
+
+<!-- Body Wrap -->
+<div id="main">
+
+    <!-- Header  -->
+    <header class="navbar navbar-fixed-top">
+        <div class="navbar-logo-wrapper dark bg-dark">
+            <a style="color: white; font-size: 23px; margin-top: 13px; margin-left: 47px;" class="navbar-logo-image" href="http://localhost:5000/">
+                Statistique
+            </a>
+        </div>
+        <span id="sidebar_left_toggle" class="ad ad-lines navbar-nav navbar-left"></span>
+    </header>
+    <!-- /Header  -->
+
+    <!-- Main Wrapper -->
+    <section id="content">
+      
+
+        <!-- Content -->
+        <section id="content" class="table-layout animated fadeIn">
+
+            <!-- Column Center -->
+            
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="panel panel-visible" id="spy3">
+                            <div class="panel-heading">
+                                <div class="panel-title hidden-xs">
+                                   Machines
+                                </div>
+                            </div>
+                            <div class="panel-body pn">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover" id="datatable3">
+                                        <thead>
+                                        <tr>
+                                            <th>Adresse Mac</th>
+                                            <th>Dérniére Connexion</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                       {% for entry in data %}
+                                        <tr>
+                                            <td>{{ entry[0] }}</td>
+                                            <td>{{ entry[1] }}</td>
+                                            <td><a href="/machine?adrMac={{ entry[0] }}" class="btn btn-gradient btn-success btn-block">Affichage les Stats</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+        </section>
+        <!-- /Content -->
+
+    </section>
+
+
+</div>
+<!-- /Body Wrap  -->
+
+
+<!-- Scripts -->
+
+<!-- jQuery -->
+<script src="static/assets/js/jquery/jquery-1.11.1.min.js"></script>
+<script src="static/assets/js/jquery/jquery_ui/jquery-ui.min.js"></script>
+
+<!-- Datatables JS -->
+<script src="static/assets/js/plugins/datatables/media/js/jquery.dataTables.js"></script>
+<script src="static/assets/js/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="static/assets/js/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+<script src="static/assets/js/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+
+<!-- HighCharts Plugin -->
+<script src="static/assets/js/plugins/highcharts/highcharts.js"></script>
+
+<!-- Theme Scripts -->
+<script src="static/assets/js/utility/utility.js"></script>
+<script src="static/assets/js/utility/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="static/assets/js/demo/demo.js"></script>
+<script src="static/assets/js/main.js"></script>
+<script src="static/assets/js/demo/widgets_sidebar.js"></script>
+<script src="static/assets/js/pages/tables-data.js"></script>
+
+<!-- /Scripts -->
+
+</body>
+
+</html>
